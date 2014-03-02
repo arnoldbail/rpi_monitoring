@@ -1,0 +1,39 @@
+#! /bin/bash
+BASE=$1
+START=$2
+END=$3
+
+function write2mpi(){
+  printf "%s\n" "${mpiArray[@]}" >> "/home/pi/myapps/rpi_monitoring/machinefile"
+ return $TRUE
+}
+
+# Cycle through each IP and determine if an ip is responding.
+# Responding ips are placed in in file: machinefile.
+# Non responding ips are placed in the rpimon.log.
+counter=$START
+logCounter=0
+mpiCounter=0
+
+while [ $counter -le $END ]
+do
+  ip=$BASE.$counter
+  if ping -qc 2 $ip
+  then
+    echo "$ip responds into mpi"
+    mpiArray[mpiCounter]="${ip}"
+    mpiCounter=$((mpiCounter + 1))
+  else
+    echo "$ip no responds into log"
+    logArray[logCounter]="${ip};0"
+    logCounter=$((logCounter + 1))
+  fi
+  counter=$(( $counter + 1 ))
+  # Save
+done
+timestamp=$(date +"%Y%m%d%H%M")
+printf "%s\n" "$timestamp" > "/var/www/rpimon.log"
+printf "%s\n" "${logArray[@]}" >> "/var/www/rpimon.log"
+write2mpi
+echo "Executing mpiexec ...."
+mpiexec -f machinefile -n 2 ~/myapps/rpi_monitoring/rpimon
