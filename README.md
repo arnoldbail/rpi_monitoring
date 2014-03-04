@@ -10,10 +10,13 @@ program, executed through the browser.
 ## Program descriptions
 ### perfchart.py program
 #### Command line
-`sudo pico /usr/lib/cgi-bin/perfchart.py
+sudo pico /usr/lib/cgi-bin/perfchart.py
+
 sudo chmod +x /usr/lib/cgi-bin/perfchart.py
+
 sudo service apache2 reload
-sudo pico -c  /var/www/rpimon.log`
+
+sudo pico -c  /var/www/rpimon.log
 #### Description
 * Executes Google Charts
 * Executed in Midori browser (http://192.168.1.5/cgi-bin/perfchart.oy) using auto refresh.
@@ -23,9 +26,11 @@ sudo pico -c  /var/www/rpimon.log`
 
 ### start_mon script
 #### Command line
-`export PATH=$PATH:/home/rpimpi/mpich-install/bin
+export PATH=$PATH:/home/rpimpi/mpich-install/bin
+
 pico start_mon
- (./start_mon '192.168.1' 5 6)`
+
+./start_mon '192.168.1' 5 6
 
 * Parm 1: First 3 digits of ip group.
 * Parm 2: Starting processor (last ip digit)
@@ -41,9 +46,12 @@ pico start_mon
 
 ### rpimon.c
 #### Command line  
-`cd ~/myapps/rpi_monitoring/
-mpicc -g -o rpimon rpimon.c
-mpiexec -f machinefile -n 2 ~/myapps/rpi_monitoring/rpimon`
+cd ~/myapps/rpi_monitoring/
+
+mpicc -g -o rpimon rpimon.c  (to compile)
+
+mpiexec -f machinefile -n 2 ~/myapps/rpi_monitoring/rpimon (this is in start_mon)
+
 #### Description
 * Utilizing MPICH because: MPI is the basis of the parallel cluster
 * Uses the example cpi.c 
